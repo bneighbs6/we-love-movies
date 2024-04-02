@@ -13,12 +13,19 @@ function listMoviesShowing() {
     .orderBy("m.movie_id")
 }
 
+function read(movie_id) {
+    return knex("movies")
+    .select("*")
+    .where({ movie_id })
+    .first(); // Displays only first item
+}
+
 module.exports = {
     list,
-    listMoviesShowing
+    listMoviesShowing,
+    read,
 }
 
 // READ HERE FIRST MOTHA FUCKA
-// You just successfully ran your seed files
-// You then created all necessary folders and  for theaters, reviews, and movies routes
-// Finish up the routes in each file
+// You just completed the routes for /movies and /movies?is_showing
+// Next: Complete route for /:movieId([0-9+])
