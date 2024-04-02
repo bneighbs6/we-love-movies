@@ -1,4 +1,5 @@
 const knex = require("../db/connection");
+const reduceProperties = require("../utils/reduce-properties");
 
 function list() {
     return knex("movies").select("*");
@@ -27,11 +28,20 @@ function listTheatersShowingMovie(movie_id) {
     .orderBy("t.theater_id");
 }
 
+
+function listMovieReviews(movie_id) {
+    return knex("reviews as r")
+    .join("critics as c", "r.critic_id", "c.critic_id")
+    .select("r.*", "c.*")
+    .where({ "r.movie_id": movie_id })
+}
+
 module.exports = {
     list,
     listMoviesShowing,
     read,
     listTheatersShowingMovie,
+    listMovieReviews
 }
 
 // READ HERE FIRST MOTHA FUCKA
