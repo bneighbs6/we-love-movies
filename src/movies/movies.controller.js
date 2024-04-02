@@ -5,7 +5,7 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 async function movieExists(req, res, next) {
     const movie = await service.read(req.params.movieId); // Passes in the movieId parameter to read() fx in service
     if (movie) {
-        res.locals.movie = movie;
+        res.locals.movie = movie; // Passes "movie" var down to other functions
         return next();
     }
     next({status: 400, message: "Movie cannot be found"})
@@ -27,8 +27,18 @@ function read(req, res) {
     res.json({ data });
 }
 
+async function listTheatersShowingMovie(req, res) {
+    const theaters = await service.listTheatersShowingMovie(
+        res.locals.movie.movie_id
+      );
+      res.json({ data: theaters });
+}
 
 module.exports = {
     list: asyncErrorBoundary(list),
     read: [asyncErrorBoundary(movieExists), read],
+    listTheatersShowingMovie: [
+        asyncErrorBoundary(movieExists),
+        listTheatersShowingMovie
+    ],
 }

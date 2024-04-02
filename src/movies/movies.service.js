@@ -20,10 +20,18 @@ function read(movie_id) {
     .first(); // Displays only first item
 }
 
+function listTheatersShowingMovie(movie_id) {
+    return knex("theaters as t")
+    .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
+    .where({ "mt.movie_id": movie_id })
+    .orderBy("t.theater_id");
+}
+
 module.exports = {
     list,
     listMoviesShowing,
     read,
+    listTheatersShowingMovie,
 }
 
 // READ HERE FIRST MOTHA FUCKA
