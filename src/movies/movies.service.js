@@ -27,6 +27,13 @@ function listTheatersShowingMovie(movie_id) {
     .where({ "mt.movie_id": movie_id })
     .orderBy("t.theater_id");
 }
+// Will create a nested critic object with items returned from listMovieReviews()
+const reduceCritics = reduceProperties("review_id", {
+    critic_id: ["critic", "critic_id"],
+    preferred_name: ["critic", "preferred_name"],
+    surname: ["critic", "surname"],
+    organization_name: ["critic", "organization_name"],
+  });
 
 
 function listMovieReviews(movie_id) {
@@ -34,6 +41,7 @@ function listMovieReviews(movie_id) {
     .join("critics as c", "r.critic_id", "c.critic_id")
     .select("r.*", "c.*")
     .where({ "r.movie_id": movie_id })
+    .then(reduceCritics);
 }
 
 module.exports = {
