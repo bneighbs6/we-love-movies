@@ -35,6 +35,7 @@ async function listTheatersShowingMovie(req, res) {
 }
 
 async function listMovieReviews(req, res) {
+    // Get review data from the specific movie ID
     const reviews = await service.listMovieReviews(res.locals.movie.movie_id);
     res.json({ data: reviews })
 }

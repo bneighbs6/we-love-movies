@@ -28,6 +28,8 @@ function listTheatersShowingMovie(movie_id) {
     .orderBy("t.theater_id");
 }
 // Will create a nested critic object with items returned from listMovieReviews()
+// This satisfies this portion of the task:
+// "This route should return all the reviews for the movie, including all the critic details added to a critic key of the review."
 const reduceCritics = reduceProperties("review_id", {
     critic_id: ["critic", "critic_id"],
     preferred_name: ["critic", "preferred_name"],
