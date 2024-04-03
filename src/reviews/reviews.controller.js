@@ -12,6 +12,18 @@ async function reviewExists(req, res, next) {
     next({ status: 404, message: "Review cannot be found."})
 }
 
+// CRUD Function
+
+async function update(req, res) {
+    const updatedReview = {
+        ...response.locals.review,
+        ...request.body.data,
+        review_id: response.locals.review.review_id,
+      };
+      const data = await service.update(updatedReview);
+      res.json({ data })
+}
+
 async function destroy(req, res) {
     const { review } = res.locals;
     await service.destroy(review.review_id);
@@ -19,8 +31,10 @@ async function destroy(req, res) {
 }
 
 module.exports = {
-    delete: [
-        asyncErrorBoundary(destroy)
+    update: [
+        asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)
     ],
-
+    delete: [
+        asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)
+    ]
 }
