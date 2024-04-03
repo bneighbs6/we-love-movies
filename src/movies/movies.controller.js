@@ -8,7 +8,7 @@ async function movieExists(req, res, next) {
         res.locals.movie = movie; // Passes "movie" var down to other functions
         return next();
     }
-    next({status: 400, message: "Movie cannot be found"})
+    next({status: 404, message: "Movie cannot be found"})
 }
 
 async function list(req, res) {
@@ -44,10 +44,10 @@ module.exports = {
     read: [asyncErrorBoundary(movieExists), read],
     listTheatersShowingMovie: [
         asyncErrorBoundary(movieExists),
-        listTheatersShowingMovie
+        asyncErrorBoundary(listTheatersShowingMovie)
     ],
     listMovieReviews: [
         asyncErrorBoundary(movieExists),
-        listMovieReviews
+        asyncErrorBoundary(listMovieReviews)
     ]
 }
