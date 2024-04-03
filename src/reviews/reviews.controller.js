@@ -9,32 +9,30 @@ async function reviewExists(req, res, next) {
         res.locals.review = review;
         return next();
     }
-    next({ status: 404, message: "Review cannot be found."})
+    next({ status: 404, message: "Review cannot be found." });
 }
 
-// CRUD Function
+// CRUD Route Handlers
 
 async function update(req, res) {
     const updatedReview = {
-        ...response.locals.review,
-        ...request.body.data,
-        review_id: response.locals.review.review_id,
-      };
-      const data = await service.update(updatedReview);
-      res.json({ data })
+        ...req.body.data,
+        review_id: res.locals.review.review_id,
+    };
+    // Update the review
+    await service.update(updatedReview);
+    // data var that include fields from both reviews and critics tables
+    const data = await service.read(res.locals.review.review_id);
+    res.json({ data });
 }
 
-async function destroy(req, res) {
+async function destroy(req, res, next) {
     const { review } = res.locals;
     await service.destroy(review.review_id);
     res.sendStatus(204);
 }
 
 module.exports = {
-    update: [
-        asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)
-    ],
-    delete: [
-        asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)
-    ]
-}
+    update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
+    delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
+};
