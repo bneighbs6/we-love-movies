@@ -1,14 +1,16 @@
 const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-// async function reviewExists(req, res) {
-//     const review = await service.read(req.params.reviewId);
-//     if (review) {
-//         res.locals.review = review;
-//         return next();
-//     }
-//     next({ status: 404. message: "Review cannot be found."})
-// }
+// Validation Middleware
+
+async function reviewExists(req, res, next) {
+    const review = await service.read(req.params.reviewId);
+    if (review) {
+        res.locals.review = review;
+        return next();
+    }
+    next({ status: 404, message: "Review cannot be found."})
+}
 
 async function destroy(req, res) {
     const { review } = res.locals;
