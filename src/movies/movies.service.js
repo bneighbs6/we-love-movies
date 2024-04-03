@@ -43,7 +43,3 @@ module.exports = {
     listTheatersShowingMovie,
     listMovieReviews
 }
-
-// READ HERE FIRST MOTHA FUCKA
-// You just completed the routes for /movies and /movies?is_showing
-// Next: Complete route for /:movieId([0-9+])
